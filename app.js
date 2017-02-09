@@ -2,20 +2,25 @@
 
 var confirmQuiz = confirm('Hello, would you like to play a game?');
 
+// The section where the results of the quiz will be displayed.
 var quizResultsSection = document.getElementById('Quiz_Results');
 
 if(confirmQuiz){
   console.log('Awesome! Let\'s get started!');
 }else{
   // The user isn't interested in me or the quiz.
-  console.log('Okay...');
-  quizResultsSection.innerHTML = 'Okay...';
+  console.log('Okay... :()');
+  quizResultsSection.innerHTML = 'Okay... :()';
 }
 
 // The user wants to do the quiz.
 if(confirmQuiz){
   // Make the quiz a bit more friendly.""
   var userName = prompt('First, what is your name?');
+  // Easter egg?
+  if(userName.toLowerCase() === 'danny'){
+    alert('Wow! You have the same name as me?! Nice!');
+  }
   alert('Okay ' + userName + ', answer with either Y or N.');
 
   // All the questions.
@@ -80,6 +85,7 @@ if(confirmQuiz){
       quizResultsString += 'R: ' + incorrectResponses[i] + '<br /><br />';
     }
   }
+  // Display all the results of the quiz.
   quizResultsSection.innerHTML = quizResultsString;
 
   // Send the user off, not forgetting their name.
