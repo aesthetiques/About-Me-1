@@ -55,6 +55,9 @@ if(confirmQuiz){
   var quizResponse;
   // String containing all quiz output before overwritting HTML.
   var quizResultsString = '';
+  // The score the user got by completing the quiz.
+  var quizScore = 0;
+  var quizTotalCorrectAnswers = 0;
 
   // Quiz Loop.
   for(var i = 0; i < quizAnswers.length; ++i){
@@ -76,6 +79,9 @@ if(confirmQuiz){
       quizResultsString += 'Q: ' + questions[i] + '<br />';
       quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
       quizResultsString += 'R: ' + correctResponses[i] + '<br /><br />';
+
+      // The user got a correct answer in the quiz!
+      quizTotalCorrectAnswers += 1;
     }else{
       console.log('Q: ' + questions[i]);
       console.log('A: ' + quizResponse.toUpperCase());
@@ -85,6 +91,7 @@ if(confirmQuiz){
       quizResultsString += 'R: ' + incorrectResponses[i] + '<br /><br />';
     }
   }
+  quizResultsString += '<br /><b>Results: ' + quizTotalCorrectAnswers + '/' + quizAnswers.length + ' questions answered correctly.</b>';
   // Display all the results of the quiz.
   quizResultsSection.innerHTML = quizResultsString;
 
