@@ -84,5 +84,5 @@ if(confirmQuiz){
 
   // Send the user off, not forgetting their name.
   var goodbyeMessage = document.getElementById('Thank_You');
-  goodbyeMessage.innerHTML = 'Thank you for playing my quiz ' + userName + '! Hope you learned something about me.';
+  goodbyeMessage.innerHTML = 'Thank you for playing my quiz <b>' + userName + '</b>! Hope you learned something about me.';
 }
