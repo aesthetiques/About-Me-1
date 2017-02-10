@@ -1,0 +1,21 @@
+* {
+  margin: 5px;
+}
+
+h1 {
+  background-color: yellow;
+  text-align: center;
+}
+
+h2 {
+  font-family: fantasy;
+  color: red;
+}
+
+ul>li {
+  background-color: lightblue;
+}
+
+ol>li {
+  background-color: lightblue;
+}
