@@ -9,13 +9,13 @@ if(confirmQuiz){
   console.log('Awesome! Let\'s get started!');
 }else{
   // The user isn't interested in me or the quiz.
-  console.log('Okay... :()');
-  quizResultsSection.innerHTML = 'Okay... :()';
+  console.log('Okay... :(');
+  quizResultsSection.innerHTML = 'Okay... :(';
 }
 
 // The user wants to do the quiz.
 if(confirmQuiz){
-  // Make the quiz a bit more friendly.""
+  // Make the quiz a bit more friendly.
   var userName = prompt('First, what is your name?');
   // Easter egg?
   if(userName.toLowerCase() === 'danny'){
@@ -29,6 +29,8 @@ if(confirmQuiz){
   var questionThree = 'Danny has been a hobbyist game developer for several years.';
   var questionFour = 'Danny named his first dog Ninja.';
   var questionFive = 'Danny once outran a professional runner in a fair race.';
+  var questionSix = 'Time for a breather from questions about me! Guess a number between 0 and 10.';
+  var questionSeven = 'What is one of the top three foods I like? ( Multiple correct answers )';
 
   // All the correct answer responses.
   var questionOneCorrect = 'Correct! That character died due to a greedy teammate though.';
@@ -36,6 +38,8 @@ if(confirmQuiz){
   var questionThreeCorrect = 'Correct! None of the games I\'ve made are particularly good, but it was fun making them.';
   var questionFourCorrect = 'Correct! She\'s a small black chihuahua.';
   var questionFiveCorrect = 'Correct! I\'m not slow, but I doubt I would beat a runner even during their off-season.';
+  var questionSixCorrect = 'Correct! That was the right number!';
+  var questionSevenCorrect = 'Correct! My favorite foods are cereal, pizza, and spaghetti!';
 
   // All the incorrect answer responses.
   var questionOneIncorrect = 'Wrong! I did play a Halfling Cleric as my first character.';
@@ -43,13 +47,19 @@ if(confirmQuiz){
   var questionThreeIncorrect = 'Wrong! I\'ve made a dozen or so games of varying polish.';
   var questionFourIncorrect = 'Wrong! She\'s a stealthy chihuahua.';
   var questionFiveIncorrect = 'Wrong! I\'ve never even raced a professional runner. However if zombies attack I just have to outrun you.';
+  var questionSixIncorrect = 'Wrong! That was your last attempt. Better luck next time!';
+  var questionSevenIncorrect = 'Wrong! That was your last attempt. Better luck next time!';
+
+  // The number guessing game data.
+  var randomNumberGameAnswer = Math.floor(Math.random() * 11);
+  var randomNumberGameChances = 4;
 
   // All the text for the quiz in a nice format to cycle through.
   // No cheating!
-  var quizAnswers = ['Y', 'N', 'Y', 'Y', 'N'];
-  var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive];
-  var correctResponses = [questionOneCorrect, questionTwoCorrect, questionThreeCorrect, questionFourCorrect, questionFiveCorrect];
-  var incorrectResponses = [questionOneIncorrect, questionTwoIncorrect, questionThreeIncorrect, questionFourIncorrect, questionFiveIncorrect];
+  var quizAnswers = ['Y', 'N', 'Y', 'Y', 'N', randomNumberGameAnswer, 'cereal pizza spaghetti'];
+  var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive, questionSix, questionSeven];
+  var correctResponses = [questionOneCorrect, questionTwoCorrect, questionThreeCorrect, questionFourCorrect, questionFiveCorrect, questionSixCorrect, questionSevenCorrect];
+  var incorrectResponses = [questionOneIncorrect, questionTwoIncorrect, questionThreeIncorrect, questionFourIncorrect, questionFiveIncorrect, questionSixIncorrect, questionSevenIncorrect];
 
   //var quizResponse = prompt(questionOne);
   var quizResponse;
@@ -66,33 +76,103 @@ if(confirmQuiz){
     do{
       quizResponse = prompt(questions[i]);
 
-      if(quizResponse.toUpperCase() === 'Y' || quizResponse.toUpperCase() === 'N'){
-        validResponse = true;
+      if(i !== 5 && i !== 6){
+        if(quizResponse.toUpperCase() === 'Y' || quizResponse.toUpperCase() === 'N'){
+          validResponse = true;
+        }
+      }else if(i === 5){
+        // The random number game has started.
+        if(!isNaN(parseInt(quizResponse))){
+          // Prevent the number from being a float by truncating the decimal value.
+          quizResponse = Math.floor(quizResponse);
+          validResponse = true;
+        }
+      }else{
+        // The multiple choice question has started.
+        if(isNaN(quizResponse)){
+          validResponse = true;
+        }
       }
     }while(!validResponse);
 
     // Responses to the answer the user gave, and output.
-    if(quizResponse.toUpperCase() === quizAnswers[i]){
-      console.log('Q: ' + questions[i]);
-      console.log('A: ' + quizResponse.toUpperCase());
-      console.log('R: ' + correctResponses[i]);
-      quizResultsString += 'Q: ' + questions[i] + '<br />';
-      quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
-      quizResultsString += 'R: ' + correctResponses[i] + '<br /><br />';
+    if(i !== 5){
+      if(quizResponse.toUpperCase() === quizAnswers[i]){
+        console.log('Q: ' + questions[i]);
+        console.log('A: ' + quizResponse.toUpperCase());
+        console.log('R: ' + correctResponses[i]);
+        quizResultsString += 'Q: ' + questions[i] + '<br />';
+        quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
+        quizResultsString += 'R: ' + correctResponses[i] + '<br /><br />';
 
-      // The user got a correct answer in the quiz!
-      quizTotalCorrectAnswers += 1;
+        // The user got a correct answer in the quiz!
+        quizTotalCorrectAnswers += 1;
+      }else{
+        console.log('Q: ' + questions[i]);
+        console.log('A: ' + quizResponse.toUpperCase());
+        console.log('R: ' + incorrectResponses[i]);
+        quizResultsString += 'Q: ' + questions[i] + '<br />';
+        quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
+        quizResultsString += 'R: ' + incorrectResponses[i] + '<br /><br />';
+      }
+    }else if(i === 5){
+      // The random number game has started.
+      var randomNumberGameComplete = false;
+      do{
+        if(quizResponse === randomNumberGameAnswer){
+          // The user got a correct answer in the quiz!
+          console.log('Q: ' + questions[i]);
+          console.log('A: ' + quizResponse);
+          console.log('R: ' + correctResponses[i]);
+          quizResultsString += 'Q: ' + questions[i] + '<br />';
+          quizResultsString += 'A: ' + quizResponse + '<br />';
+          quizResultsString += 'R: ' + correctResponses[i] + '<br /><br />';
+
+          randomNumberGameComplete = true;
+          quizTotalCorrectAnswers += 1;
+        }else if((randomNumberGameChances - 1) > 0){
+          // Incorrect, but still has chances.
+          randomNumberGameChances -= 1;
+
+          // Inform the user how close they were to the answer.
+          if(quizResponse > randomNumberGameAnswer){
+            quizResponse = alert('The number you guessed is TOO HIGH. Chances Remaining: ' + randomNumberGameChances);
+          }else{
+            quizResponse = alert('The number you guessed is TOO LOW. Chances Remaining: ' + randomNumberGameChances);
+          }
+
+          // Prevent the user from progressing until they respond with a valid answer.
+          var validNumberResponse = false;
+          do{
+            quizResponse = prompt(questions[i]);
+
+            if(!isNaN(parseInt(quizResponse))){
+              // Prevent the number from being a float by truncating the decimal value.
+              quizResponse = Math.floor(quizResponse);
+              validNumberResponse = true;
+            }
+          }while(!validNumberResponse);
+        }else{
+          // Incorrect and has no tries remaining.
+          console.log('Q: ' + questions[i]);
+          console.log('A: ' + quizResponse);
+          console.log('R: ' + incorrectResponses[i]);
+          quizResultsString += 'Q: ' + questions[i] + '<br />';
+          quizResultsString += 'A: ' + quizResponse + '<br />';
+          quizResultsString += 'R: ' + incorrectResponses[i] + '<br /><br />';
+
+          alert(incorrectResponses[i]);
+
+          randomNumberGameComplete = true;
+        }
+      }while(!randomNumberGameComplete);
     }else{
-      console.log('Q: ' + questions[i]);
-      console.log('A: ' + quizResponse.toUpperCase());
-      console.log('R: ' + incorrectResponses[i]);
-      quizResultsString += 'Q: ' + questions[i] + '<br />';
-      quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
-      quizResultsString += 'R: ' + incorrectResponses[i] + '<br /><br />';
+      // The multiple choice question has started.
+
     }
   }
   quizResultsString += '<br /><b>Results: ' + quizTotalCorrectAnswers + '/' + quizAnswers.length + ' questions answered correctly.</b>';
-  // Display all the results of the quiz.
+  // Display all the results of the quiz.=
   quizResultsSection.innerHTML = quizResultsString;
 
   // Send the user off, not forgetting their name.
