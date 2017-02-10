@@ -54,9 +54,12 @@ if(confirmQuiz){
   var randomNumberGameAnswer = Math.floor(Math.random() * 11);
   var randomNumberGameChances = 4;
 
+  // The amount of chances for the multiple choice question.
+  var multipleChoiceQuestionChances = 6;
+
   // All the text for the quiz in a nice format to cycle through.
   // No cheating!
-  var quizAnswers = ['Y', 'N', 'Y', 'Y', 'N', randomNumberGameAnswer, 'cereal pizza spaghetti'];
+  var quizAnswers = ['Y', 'N', 'Y', 'Y', 'N', randomNumberGameAnswer, 'CEREAL PIZZA SPAGHETTI'];
   var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive, questionSix, questionSeven];
   var correctResponses = [questionOneCorrect, questionTwoCorrect, questionThreeCorrect, questionFourCorrect, questionFiveCorrect, questionSixCorrect, questionSevenCorrect];
   var incorrectResponses = [questionOneIncorrect, questionTwoIncorrect, questionThreeIncorrect, questionFourIncorrect, questionFiveIncorrect, questionSixIncorrect, questionSevenIncorrect];
@@ -87,16 +90,13 @@ if(confirmQuiz){
           quizResponse = Math.floor(quizResponse);
           validResponse = true;
         }
-      }else{
-        // The multiple choice question has started.
-        if(isNaN(quizResponse)){
-          validResponse = true;
-        }
+      }else if(i === 6){
+        validResponse = true;
       }
     }while(!validResponse);
 
     // Responses to the answer the user gave, and output.
-    if(i !== 5){
+    if(i !== 5 && i !== 6){
       if(quizResponse.toUpperCase() === quizAnswers[i]){
         console.log('Q: ' + questions[i]);
         console.log('A: ' + quizResponse.toUpperCase());
@@ -168,7 +168,52 @@ if(confirmQuiz){
       }while(!randomNumberGameComplete);
     }else{
       // The multiple choice question has started.
+      // Get the favorite foods from the array.
+      var spaceOneLocationInString = quizAnswers[i].indexOf(' ');
+      var spaceTwoLocationInString = quizAnswers[i].lastIndexOf(' ');
+      var favoriteFoodOne = quizAnswers[i].slice(0, spaceOneLocationInString);
+      var favoriteFoodTwo = quizAnswers[i].slice(spaceOneLocationInString + 1, spaceTwoLocationInString);
+      var favoriteFoodThree = quizAnswers[i].slice(spaceTwoLocationInString + 1, quizAnswers[i].length);
 
+      console.log(favoriteFoodOne);
+      console.log(favoriteFoodTwo);
+      console.log(favoriteFoodThree);
+
+      var multipleChoiceQuestionComplete = false;
+      do{
+        if(quizResponse.toUpperCase() === favoriteFoodOne || quizResponse.toUpperCase() === favoriteFoodTwo || quizResponse.toUpperCase() === favoriteFoodThree){
+          // The user got a correct answer in the quiz!
+          console.log('Q: ' + questions[i]);
+          console.log('A: ' + quizResponse.toUpperCase());
+          console.log('R: ' + correctResponses[i]);
+          quizResultsString += 'Q: ' + questions[i] + '<br />';
+          quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
+          quizResultsString += 'R: ' + correctResponses[i] + '<br /><br />';
+
+          multipleChoiceQuestionComplete = true;
+          quizTotalCorrectAnswers += 1;
+        }else if((multipleChoiceQuestionChances - 1) > 0){
+          // Incorrect, but still has chances.
+          multipleChoiceQuestionChances -= 1;
+
+          alert('Incorrect! You have ' + multipleChoiceQuestionChances + ' chances left!');
+
+          quizResponse = prompt(questions[i]);
+        }else{
+          // Incorrect and has no tries remaining.
+          console.log('Q: ' + questions[i]);
+          console.log('A: ' + quizResponse.toUpperCase());
+          console.log('R: ' + incorrectResponses[i]);
+          quizResultsString += 'Q: ' + questions[i] + '<br />';
+          quizResultsString += 'A: ' + quizResponse.toUpperCase() + '<br />';
+          quizResultsString += 'R: ' + incorrectResponses[i] + '<br />';
+          quizResultsString += 'The correct answers were: ' + favoriteFoodOne + ', ' + favoriteFoodTwo + ', and ' + favoriteFoodThree + '.<br /><br />';
+
+          alert(incorrectResponses[i]);
+
+          multipleChoiceQuestionComplete = true;
+        }
+      }while(!multipleChoiceQuestionComplete);
     }
   }
   quizResultsString += '<br /><b>Results: ' + quizTotalCorrectAnswers + '/' + quizAnswers.length + ' questions answered correctly.</b>';
