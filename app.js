@@ -5,6 +5,18 @@ var confirmQuiz = confirm('Hello, would you like to play a game?');
 // The section where the results of the quiz will be displayed.
 var quizResultsSection = document.getElementById('Quiz_Results');
 
+function sliceIt(favoriteFoods, favoriteFoodDesired){
+  var spaceOneLocationInString = favoriteFoods.indexOf(' ');
+  var spaceTwoLocationInString = favoriteFoods.lastIndexOf(' ');
+  if(favoriteFoodDesired === 0){
+    return favoriteFoods.slice(0, spaceOneLocationInString);
+  } else if(favoriteFoodDesired === 1){
+    return favoriteFoods.slice(spaceOneLocationInString + 1, spaceTwoLocationInString);
+  } else {
+    return favoriteFoods.slice(spaceTwoLocationInString + 1, favoriteFoods.length);
+  }
+}
+
 if(confirmQuiz){
   console.log('Awesome! Let\'s get started!');
 }else{
@@ -169,12 +181,10 @@ if(confirmQuiz){
     }else{
       // The multiple choice question has started.
       // Get the favorite foods from the array.
-      var spaceOneLocationInString = quizAnswers[i].indexOf(' ');
-      var spaceTwoLocationInString = quizAnswers[i].lastIndexOf(' ');
-      var favoriteFoodOne = quizAnswers[i].slice(0, spaceOneLocationInString);
-      var favoriteFoodTwo = quizAnswers[i].slice(spaceOneLocationInString + 1, spaceTwoLocationInString);
-      var favoriteFoodThree = quizAnswers[i].slice(spaceTwoLocationInString + 1, quizAnswers[i].length);
 
+      var favoriteFoodOne = sliceIt(quizAnswers[i], 0);
+      var favoriteFoodTwo = sliceIt(quizAnswers[i], 1);
+      var favoriteFoodThree = sliceIt(quizAnswers[i], 2);
       console.log(favoriteFoodOne);
       console.log(favoriteFoodTwo);
       console.log(favoriteFoodThree);
